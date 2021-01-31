@@ -62,25 +62,18 @@ class Api {
   }
 
   changeUserPicture(avatar) {
+    console.log(avatar);
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
       headers: this._headers,
-      body: JSON.stringify({ avatar })
+      body: JSON.stringify(avatar)
     })
       .then(res => this._handleOriginal(res));
   }
 
-  addLikeCard(cardID) {
+  changeLikeCardStatus(cardID, isLiked) {
     return fetch(`${this._baseUrl}/cards/likes/${cardID}`, {
-      method: 'PUT',
-      headers: this._headers
-    })
-      .then(res => this._handleOriginal(res));
-  }
-
-  deleteLikeCard(cardID) {
-    return fetch(`${this._baseUrl}/cards/likes/${cardID}`, {
-      method: 'DELETE',
+      method: isLiked ? 'PUT' : 'DELETE',
       headers: this._headers
     })
       .then(res => this._handleOriginal(res));
