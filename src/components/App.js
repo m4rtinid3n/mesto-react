@@ -2,24 +2,21 @@ import React, {useEffect, useState} from 'react';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
+import PopupWithForm from './PopupWithForm';
 import Preloader from './Preloader';
 import { EditProfilePopup } from './EditProfilePopup';
 import { EditAvatarPopup } from './EditAvatarPopup';
-import { PopupDeleteCard} from './PopupDeleteCard';
 import ImagePopup from './ImagePopup';
 import api from '../utils/api.js';
 import {transformCard} from "../utils/transformCard";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { InitialCards } from "../contexts/initialCards";
-import {TextForSubmitBtn, textForSubmitBtn} from "../contexts/TextForSubmitBtn";
 import { AddPlacePopup } from "./AddPlacePopup";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-  const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] = useState(false);
-  const [isImgPopupOpen, setIsImgPopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
@@ -37,20 +34,11 @@ function App() {
     setIsAddPlacePopupOpen(!isAddPlacePopupOpen);
   }
 
-  const handleDeleteCardClick = () => {
-    setIsDeleteCardPopupOpen(!isDeleteCardPopupOpen);
-  }
-
-  const handleImgCardClick = () => {
-    setIsImgPopupOpen(!isImgPopupOpen);
-  }
 
   const closeAllPopups = () => {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
-    setIsDeleteCardPopupOpen(false);
-    setIsImgPopupOpen(false);
     setSelectedCard(null);
   }
 
@@ -97,7 +85,9 @@ function App() {
     })
       .catch(err => console.log(err))
   }
+
   const handleAddPlaceSubmit = (newCard) => {
+    console.log(newCard)
     api.createCard(newCard)
       .then(newCard => {
         const newItem = transformCard(newCard);
@@ -106,12 +96,13 @@ function App() {
       })
       .catch(err => console.log(err))
   }
+
   const handleCardDelete = (card) => {
     api.deleteCard(card._id)
       .then(() => {
         const newCards = cards.filter(c => c._id !== card._id)
-        setCards(newCards);
-        closeAllPopups();
+
+        setCards(newCards)
       })
       .catch(err => console.log(err))
   }
@@ -127,45 +118,45 @@ function App() {
             onEditAvatar={handleEditAvatarClick}
             onEditProfile={handleEditProfileClick}
             onAddPlace={handleAddPlaceClick}
-            onPopupDeleteCard={handleDeleteCardClick}
-            onPopupImg={handleImgCardClick}
             onCardClick={setSelectedCard}
             onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
           />}
           <Footer />
 
-          <TextForSubmitBtn.Provider value={textForSubmitBtn}>
-            <EditProfilePopup
-              isOpen={isEditProfilePopupOpen}
-              onClose={closeAllPopups}
-              onUpdateUser={handleUpdateUser}
-            />
+          <EditProfilePopup
+            isOpen={isEditProfilePopupOpen}
+            onClose={closeAllPopups}
+            onUpdateUser={handleUpdateUser}
+          />
 
-            <EditAvatarPopup
-              isOpen={isEditAvatarPopupOpen}
-              onClose={closeAllPopups}
-              onUpdateAvatar={handleUpdateAvatar}
-            />
+          <EditAvatarPopup
+            isOpen={isEditAvatarPopupOpen}
+            onClose={closeAllPopups}
+            onUpdateAvatar={handleUpdateAvatar}
+          />
 
-            <AddPlacePopup
-              isOpen={isAddPlacePopupOpen}
-              onClose={closeAllPopups}
-              onAddPlace={handleAddPlaceSubmit}
-            />
+          <AddPlacePopup
+            isOpen={isAddPlacePopupOpen}
+            onClose={closeAllPopups}
+            onAddPlace={handleAddPlaceSubmit}
+          />
+          <PopupWithForm
+            name="card-delete"
+            title="Вы уверены?"
+            onClose={closeAllPopups}
+          >
+            <label className="popup__field">
+              <input type="url" className="popup__input popup__input_type_link" name="link"  placeholder="Ссылка на картинку" required />
+              <span className="popup__error"></span>
+            </label>
+          </PopupWithForm>
 
-            <PopupDeleteCard
-              isOpen={isDeleteCardPopupOpen}
-              onClose={closeAllPopups}
-              card={selectedCard}
-              onCardDelete={handleCardDelete}
-            />
+          <ImagePopup
+            card={selectedCard}
+            onClose={closeAllPopups}
+          />
 
-            <ImagePopup
-              isOpen={isImgPopupOpen}
-              onClose={closeAllPopups}
-              card={selectedCard}
-            />
-          </TextForSubmitBtn.Provider>
         </div>
       </CurrentUserContext.Provider>
     </InitialCards.Provider>

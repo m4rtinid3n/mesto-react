@@ -2,7 +2,7 @@ import React from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 
-const Card = ({card, onCardClick, onCardLike, onPopupDeleteCard, onPopupImg}) => {
+const Card = ({card, onCardClick, onCardLike, onCardDelete}) => {
 
   const {link, name, likes, ownerId} = card;
 
@@ -17,7 +17,6 @@ const Card = ({card, onCardClick, onCardLike, onPopupDeleteCard, onPopupImg}) =>
   const cardLikeButtonClassName = isLiked ? "button button__like button__like_active" : "button button__like";
 
   const handleCardClick = () => {
-    onPopupImg();
     onCardClick(card);
   }
 
@@ -26,11 +25,8 @@ const Card = ({card, onCardClick, onCardLike, onPopupDeleteCard, onPopupImg}) =>
   }
 
   const handleDeleteClick = () => {
-    onPopupDeleteCard();
-    onCardClick(card);
+    onCardDelete(card);
   }
-
-
 
   return <>
     <li className="elements__item">

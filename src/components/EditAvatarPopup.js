@@ -1,12 +1,9 @@
 import PopupWithForm from './PopupWithForm'
-import React, {useContext, useRef} from "react";
-import { TextForSubmitBtn } from "../contexts/TextForSubmitBtn";
+import React, { useRef} from "react";
 
 export const EditAvatarPopup = ({isOpen, onClose, onUpdateAvatar}) => {
-
   const avatarRef = useRef();
-  const textForSubmitBtn = useContext(TextForSubmitBtn);
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -22,9 +19,8 @@ export const EditAvatarPopup = ({isOpen, onClose, onUpdateAvatar}) => {
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
-      textSubmitBtn={textForSubmitBtn.save}
     >
-      <label className="popup__field">*/}
+      <label className="popup__field">
         <input
           ref={avatarRef}
           type="url"

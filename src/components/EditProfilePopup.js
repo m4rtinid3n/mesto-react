@@ -1,14 +1,11 @@
-import PopupWithForm from './PopupWithForm'
-import React, {useState, useEffect, useContext} from "react";
-import { TextForSubmitBtn } from "../contexts/TextForSubmitBtn";
+  import PopupWithForm from './PopupWithForm'
+  import React, { useState, useEffect } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-
 
 export const EditProfilePopup = ({isOpen, onClose, onUpdateUser}) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const currentUser = React.useContext(CurrentUserContext);
-  const textForSubmitBtn = useContext(TextForSubmitBtn);
 
   useEffect(() => {
     setName(currentUser.name || '');
@@ -41,7 +38,6 @@ export const EditProfilePopup = ({isOpen, onClose, onUpdateUser}) => {
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
-      textSubmitBtn={textForSubmitBtn.save}
     >
       <label className="popup__field">
         <input

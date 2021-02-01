@@ -78,7 +78,6 @@ class Api {
     })
       .then(res => this._handleOriginal(res));
   }
-
 }
 
 const api = new Api({

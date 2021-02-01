@@ -3,7 +3,7 @@ import Card from './Card';
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { InitialCards }  from "../contexts/initialCards";
 
-const Main = ({onEditAvatar, onEditProfile, onAddPlace, onCardClick, onCardLike, onPopupDeleteCard, onPopupImg }) =>  {
+const Main = ({onAddPlace, onEditAvatar, onEditProfile, onCardClick, onCardLike, onCardDelete}) =>  {
   const currentUser = React.useContext(CurrentUserContext);
   const cards = React.useContext(InitialCards);
 
@@ -40,8 +40,7 @@ const Main = ({onEditAvatar, onEditProfile, onAddPlace, onCardClick, onCardLike,
                   key={card._id}
                   onCardClick={onCardClick}
                   onCardLike={onCardLike}
-                  onPopupDeleteCard={onPopupDeleteCard}
-                  onPopupImg={onPopupImg}
+                  onCardDelete={onCardDelete}
                   />)
             }
           </ul>
